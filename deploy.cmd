@@ -109,16 +109,14 @@ IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
 if NOT EXIST "%DEPLOYMENT_TARGET%\config.development.json" (
 	echo Init config.development.json
 	copy "%DEPLOYMENT_TARGET%\config.development.json.init" "%DEPLOYMENT_TARGET%\config.development.json"
-)
-else (
+) else (
 	echo Skipping config.development.json
 )
 
 if NOT EXIST "%DEPLOYMENT_TARGET%\config.production.json" (
 	echo Init config.production.json
 	copy "%DEPLOYMENT_TARGET%\config.production.json.init" "%DEPLOYMENT_TARGET%\config.production.json"
-)
-else (
+) else (
 	echo Skipping config.production.json
 )
 
