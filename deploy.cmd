@@ -106,6 +106,22 @@ IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
   popd
 )
 
+if NOT EXIST "%DEPLOYMENT_TARGET%\config.development.json" (
+	echo Init config.development.json
+	copy "%DEPLOYMENT_TARGET%\config.development.json.init" "%DEPLOYMENT_TARGET%\config.development.json"
+)
+else (
+	echo Skipping config.development.json
+)
+
+if NOT EXIST "%DEPLOYMENT_TARGET%\config.production.json" (
+	echo Init config.production.json
+	copy "%DEPLOYMENT_TARGET%\config.production.json.init" "%DEPLOYMENT_TARGET%\config.production.json"
+)
+else (
+	echo Skipping config.production.json
+)
+
 :: 4. Handle database creation and migrations.
 IF EXIST "%DEPLOYMENT_TARGET%\db.js" (
   pushd "%DEPLOYMENT_TARGET%"
