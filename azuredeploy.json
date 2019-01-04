@@ -119,6 +119,7 @@
             "mail__from": "[parameters('Email From Address')]",
             "WEBSITE_NODE_DEFAULT_VERSION": "10.14.1",
             "npm_config_arch": "x64",
+            "NODE_ENV": "production",
             "APPINSIGHTS_INSTRUMENTATION_KEY": "[reference(concat('Microsoft.Insights/components/', variables('appInsightsName'))).InstrumentationKey]"
           }
         },
