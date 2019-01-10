@@ -10,8 +10,8 @@
         "contentPath": "content/"
     },
     "caching": {
-		"frontend": {
-			"maxAge": 600
-		}
-	}
+      "frontend": {
+        "maxAge": 600
+      }
+    }
 }

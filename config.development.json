@@ -9,10 +9,10 @@
     "paths": {
         "contentPath": "content/"
     },
-    "privacy": {
-        "useRpcPing": false,
-        "useUpdateCheck": true
-    },
+  "privacy": {
+    "useRpcPing": false,
+    "useUpdateCheck": true
+  },
     "useMinFiles": false,
     "caching": {
         "theme": {
@@ -21,6 +21,6 @@
         "admin": {
             "maxAge": 0
         }
-	},
-	"forceAdminSSL": false
+    },
+    "forceAdminSSL": false
 }
