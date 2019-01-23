@@ -1,35 +1,20 @@
 # Ghost-Azure 
-## Your Ghost blog ready for Azure app service deployment. 
-[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
-[![Visualize](http://armviz.io/visualizebutton.png)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fsolvsoftware%2FGhost-Azure%2Fazure%2Fazuredeploy.json)
-[Deploy to Azure via Portal](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsolvsoftware%2FGhost-Azure%2Fazure%2Fazuredeploy.json)
-<p>
-</p>
-
 ## Why Ghost-Azure?
-The current version of Ghost(1.18.0) is not compatible with Azure app service. Ghost-Azure is a production-ready template which can be hosted directly on Azure app service. We will try to maintain the ghost version updated. All contributions are welcome.
+Straight out of the box, the current 1.x and 2.x versions of Ghost aren't compatible with the Azure App Service. Ghost-Azure resolves this by providing a production-ready template which can be hosted directly on Azure App Service. In the background, an Azure Function ([Ghost-Release-Uploader](https://github.com/YannickRe/Ghost-Release-Uploader)) makes sure that this repository stays up-to-date with the latest releases of Ghost.
+Most of the work has been done by [Radoslav Gatev](https://www.gatevnotes.com/introducing-ghost-2-on-azure-web-app-service/) who created the deployment template and the release uploader. Due to unknown reasons his repository wasn't being kept up-to-date with the latest releases, so we forked it and ran our own processes.
 
-## Usage
-### 1. Fork this repository.
-### 2. Branch out from the branch "azure".
-```bash
-git checkout azure
-git checkout -b my_blog
-```
-### 3. Install npm modules.
-```bash
-npm install
-```
-### 4. Initialize your database.
-```bash
-node db.js
-```
-### 5. Customize everything you want in your content folder.
-### 6. Keep your fork up to date(if you want the latest ghost version).
-[https://help.github.com/articles/syncing-a-fork/](https://help.github.com/articles/syncing-a-fork/)
+I documented my installation process, with additional steps to add Sendgrid, SSL, Azure Search, etc. on [my blog](https://blog.yannickreekmans.be/tag/ghost-tag/).
 
-OR
-```bash
-git checkout my_branch
-git pull https://github.com/solvsoftware/Ghost-Azure azure
-```
+## Why two branches?
+The first branch (__azure__) gets updated as soon as a new release of Ghost is published in their [repository](https://github.com/TryGhost/Ghost), and this gets then automatically deployed to my staging slot.  
+Once I have manually validated the new version on staging, I merge __azure__ into __azure-prod__ which then get automatically deployed to my production slot.  
+
+## Installation methods
+In any case I suggest forking my repository into your own, this to avoid changes I make to my repository to negatively impact your installation.
+
+### One-click deploy
+[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
+[![Visualize](http://armviz.io/visualizebutton.png)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2FYannickRe%2FGhost-Azure%2Fazure%2Fazuredeploy.json)
+
+### Azure App Service Deployment Center
+More info on [Microsoft Docs](https://docs.microsoft.com/en-us/azure/app-service/deploy-continuous-deployment#deploy-continuously-from-github)
