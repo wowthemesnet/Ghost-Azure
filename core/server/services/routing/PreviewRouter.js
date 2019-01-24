@@ -22,8 +22,7 @@ class PreviewRouter extends ParentRouter {
     _prepareContext(req, res, next) {
         res.routerOptions = {
             type: 'entry',
-            query: this.RESOURCE_CONFIG,
-            context: ['preview']
+            query: this.RESOURCE_CONFIG
         };
 
         next();

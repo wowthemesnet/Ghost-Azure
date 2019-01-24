@@ -72,11 +72,14 @@ Post = ghostBookshelf.Model.extend({
         return filteredKeys;
     },
 
-    emitChange: function emitChange(event, options = {}) {
+    emitChange: function emitChange(event, options) {
         let eventToTrigger;
-        let resourceType = this.get('page') ? 'page' : 'post';
 
-        if (options.usePreviousAttribute) {
+        var resourceType = this.get('page') ? 'page' : 'post';
+
+        if (options.useUpdatedAttribute) {
+            resourceType = this.updated('page') ? 'page' : 'post';
+        } else if (options.usePreviousAttribute) {
             resourceType = this.previous('page') ? 'page' : 'post';
         }
 
@@ -109,26 +112,26 @@ Post = ghostBookshelf.Model.extend({
     },
 
     onUpdated: function onUpdated(model, attrs, options) {
-        model.statusChanging = model.get('status') !== model.previous('status');
+        model.statusChanging = model.get('status') !== model.updated('status');
         model.isPublished = model.get('status') === 'published';
         model.isScheduled = model.get('status') === 'scheduled';
-        model.wasPublished = model.previous('status') === 'published';
-        model.wasScheduled = model.previous('status') === 'scheduled';
-        model.resourceTypeChanging = model.get('page') !== model.previous('page');
+        model.wasPublished = model.updated('status') === 'published';
+        model.wasScheduled = model.updated('status') === 'scheduled';
+        model.resourceTypeChanging = model.get('page') !== model.updated('page');
         model.publishedAtHasChanged = model.hasDateChanged('published_at');
         model.needsReschedule = model.publishedAtHasChanged && model.isScheduled;
 
         // Handle added and deleted for post -> page or page -> post
         if (model.resourceTypeChanging) {
             if (model.wasPublished) {
-                model.emitChange('unpublished', Object.assign({usePreviousAttribute: true}, options));
+                model.emitChange('unpublished', Object.assign({useUpdatedAttribute: true}, options));
             }
 
             if (model.wasScheduled) {
-                model.emitChange('unscheduled', Object.assign({usePreviousAttribute: true}, options));
+                model.emitChange('unscheduled', Object.assign({useUpdatedAttribute: true}, options));
             }
 
-            model.emitChange('deleted', Object.assign({usePreviousAttribute: true}, options));
+            model.emitChange('deleted', Object.assign({useUpdatedAttribute: true}, options));
             model.emitChange('added', options);
 
             if (model.isPublished) {
@@ -730,6 +733,8 @@ Post = ghostBookshelf.Model.extend({
     /**
      * ### Edit
      * Fetches and saves to Post. See model.Base.edit
+     *
+     * @extends ghostBookshelf.Model.edit to handle returning the full object and manage _updatedAttributes
      * **See:** [ghostBookshelf.Model.edit](base.js.html#edit)
      */
     edit: function edit(data, unfilteredOptions) {
@@ -747,7 +752,7 @@ Post = ghostBookshelf.Model.extend({
                         .then((found) => {
                             if (found) {
                                 // Pass along the updated attributes for checking status changes
-                                found._previousAttributes = post._previousAttributes;
+                                found._updatedAttributes = post._updatedAttributes;
                                 return found;
                             }
                         });
@@ -811,7 +816,7 @@ Post = ghostBookshelf.Model.extend({
     },
 
     // NOTE: the `authors` extension is the parent of the post model. It also has a permissible function.
-    permissible: function permissible(postModel, action, context, unsafeAttrs, loadedPermissions, hasUserPermission, hasAppPermission, hasApiKeyPermission) {
+    permissible: function permissible(postModel, action, context, unsafeAttrs, loadedPermissions, hasUserPermission, hasAppPermission) {
         let isContributor, isEdit, isAdd, isDestroy;
 
         function isChanging(attr) {
@@ -852,7 +857,7 @@ Post = ghostBookshelf.Model.extend({
             excludedAttrs.push('tags');
         }
 
-        if (hasUserPermission && hasApiKeyPermission && hasAppPermission) {
+        if (hasUserPermission && hasAppPermission) {
             return Promise.resolve({excludedAttrs});
         }
 

@@ -18,7 +18,8 @@ const labs = require('../../labs'),
     subscribePattern = new RegExp('^\\/subscribe\\/'),
     // routeKeywords.amp: 'amp'
     ampPattern = new RegExp('\\/amp\\/$'),
-    homePattern = new RegExp('^\\/$');
+    homePattern = new RegExp('^\\/$'),
+    previewPattern = new RegExp('^\\/p\\/');
 
 function setResponseContext(req, res, data) {
     var pageParam = req.params && req.params.page !== undefined ? parseInt(req.params.page, 10) : 1;
@@ -46,31 +47,21 @@ function setResponseContext(req, res, data) {
         res.locals.context.push('amp');
     }
 
+    if (previewPattern.test(res.locals.relativeUrl)) {
+        res.locals.context.push('preview');
+    }
+
     // Each page can only have at most one of these
     if (res.routerOptions && res.routerOptions.context) {
         res.locals.context = res.locals.context.concat(res.routerOptions.context);
-    }
-
-    if (privatePattern.test(res.locals.relativeUrl)) {
-        if (!res.locals.context.includes('private')) {
-            res.locals.context.push('private');
-        }
-    }
-
-    if (subscribePattern.test(res.locals.relativeUrl) && labs.isSet('subscribers') === true) {
-        if (!res.locals.context.includes('subscribe')) {
-            res.locals.context.push('subscribe');
-        }
-    }
-
-    if (data && data.post && data.post.page) {
-        if (!res.locals.context.includes('page')) {
-            res.locals.context.push('page');
-        }
+    } else if (privatePattern.test(res.locals.relativeUrl)) {
+        res.locals.context.push('private');
+    } else if (subscribePattern.test(res.locals.relativeUrl) && labs.isSet('subscribers') === true) {
+        res.locals.context.push('subscribe');
+    } else if (data && data.post && data.post.page) {
+        res.locals.context.push('page');
     } else if (data && data.post) {
-        if (!res.locals.context.includes('post')) {
-            res.locals.context.push('post');
-        }
+        res.locals.context.push('post');
     }
 }
 

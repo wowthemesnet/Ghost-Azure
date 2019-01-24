@@ -77,8 +77,7 @@ fetch = function fetch(options, data) {
 module.exports = function prevNext(options) {
     options = options || {};
 
-    const data = createFrame(options.data);
-    const context = options.data.root.context;
+    var data = createFrame(options.data);
 
     // Guard against incorrect usage of the helpers
     if (!options.fn || !options.inverse) {
@@ -87,12 +86,8 @@ module.exports = function prevNext(options) {
         return Promise.resolve();
     }
 
-    if (context.includes('preview')) {
-        return Promise.resolve(options.inverse(this, {data: data}));
-    }
-
-    // Guard against trying to execute prev/next on pages, or other resources
-    if (!isPost(this) || this.page) {
+    // Guard against trying to execute prev/next on previews, pages, or other resources
+    if (!isPost(this) || this.status !== 'published' || this.page) {
         return Promise.resolve(options.inverse(this, {data: data}));
     }
 
