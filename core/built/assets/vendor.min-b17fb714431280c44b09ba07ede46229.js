@@ -9556,7 +9556,7 @@ let o=this.editor
 o&&o.destroy()
 let i=this.editorOptions
 i.mobiledoc=e,i.showLinkTooltips=!1,i.undoDepth=100,i.parserPlugins=l.default
-let s={[A]:({env:e,options:t,payload:r},n)=>{let i=e.name,s=a.CARD_COMPONENT_MAP[i],p=r.files,c=Ember.copy(r,!0)
+let s={[A]:({env:e,options:t,payload:r},n)=>{let i=e.name,s=a.CARD_COMPONENT_MAP[i],p=r.files,c=JSON.parse(JSON.stringify(r||null))
 c.files=p
 let l=Ember.Object.create({cardName:i,componentName:s,koenigOptions:n,payload:c,env:e,options:t,editor:o,postModel:e.postModel,isSelected:!1,isEditing:!1}),u=`koenig-editor-card-${Ember.guidFor(l)}`,b=document.createElement("div")
 return b.id=u,l.setProperties({destinationElementId:u,destinationElement:b}),Ember.run.schedule("afterRender",()=>{this.componentCards.pushObject(l)}),{card:l,element:b}},[g]:e=>{this.componentCards.removeObject(e)}}
@@ -9729,7 +9729,7 @@ if(t===this._openRange.head.section){let r=t.text.substring(this._openRange.head
 this._updateQuery(r)}}},_updateQuery(e){this._query=e
 let t=e.split(/\s/)[0],n=r.CARD_MENU.map(e=>{if(!t)return e
 let r=e.items.filter(e=>e.matches.any(e=>0===e.indexOf(t)))
-return r.length>0?{title:e.title,items:r}:void 0}).compact(),o=Ember.copy(n,!0)
+return r.length>0?{title:e.title,items:r}:void 0}).compact(),o=JSON.parse(JSON.stringify(n||[]))
 o.length&&Ember.set(o[0].items[0],"selected",!0),this.set("itemSections",o)},_showMenu(){let e=this.editorRange,t=e.head.section
 !this.showMenu&&e.isCollapsed&&t&&!t.isListItem&&"/"===t.text&&(this.set("showMenu",!0),this._updateQuery(""),this._openRange=this.editorRange,this._registerKeyboardNavHandlers(),this._onWindowMousedownHandler=Ember.run.bind(this,e=>{this._handleWindowMousedown(e)}),window.addEventListener("mousedown",this._onWindowMousedownHandler))},_hideMenu(){this.showMenu&&(this.set("showMenu",!1),this._unregisterKeyboardNavHandlers(),window.removeEventListener("mousedown",this._onWindowMousedownHandler))},_handleWindowMousedown(e){e.target.closest(`#${this.elementId}`)?e.target.closest('[data-kg="cardmenu-card"]')||e.preventDefault():this._hideMenu()},_positionMenu(e){if(!e)return
 let t=e.head.section
