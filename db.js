@@ -6,14 +6,20 @@ var knexMigrator = new KnexMigrator({
 // check your database health
 knexMigrator.isDatabaseOK()
     .then(function () {
-        // database is OK
+        console.log("database is ok");
+        process.exit(0);
     })
     .catch(function (err) {
+        console.log("db error: " + err.code);
         if (err.code === 'DB_NOT_INITIALISED') {
-            knexMigrator.init();
+            knexMigrator.init().then(function () {
+                process.exit(0);
+            });
         }
 
         if (err.code === 'DB_NEEDS_MIGRATION') {
-            knexMigrator.migrate();
+            knexMigrator.migrate().then(function () {
+                process.exit(0);
+            });
         }
     });
