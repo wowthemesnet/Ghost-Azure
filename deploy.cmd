@@ -101,7 +101,8 @@ call :SelectNodeVersion
 IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
   pushd "%DEPLOYMENT_TARGET%"
   call :ExecuteCmd !NPM_CMD! config set scripts-prepend-node-path true
-  call :ExecuteCmd !NPM_CMD! install --production
+  call :ExecuteCmd !NPM_CMD! install --production --no-package-lock
+  call :ExecuteCmd !NPM_CMD! prune
   IF !ERRORLEVEL! NEQ 0 goto error
   popd
 )
