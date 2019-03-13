@@ -102,7 +102,9 @@ IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
   pushd "%DEPLOYMENT_TARGET%"
   echo Running npm install
   call :ExecuteCmd !NPM_CMD! config set scripts-prepend-node-path true
-  call :ExecuteCmd !NPM_CMD! install --production --no-package-lock --audit false --logevel silent
+  call :ExecuteCmd !NPM_CMD! config set audit false
+  call :ExecuteCmd !NPM_CMD! config set loglevel silent
+  call :ExecuteCmd !NPM_CMD! install --production --no-package-lock
   call :ExecuteCmd !NPM_CMD! prune
   IF !ERRORLEVEL! NEQ 0 goto error
   popd
