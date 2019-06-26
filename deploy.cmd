@@ -101,6 +101,7 @@ call :SelectNodeVersion
 IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
   pushd "%DEPLOYMENT_TARGET%"
   echo Running npm install
+  call :ExecuteCmd !NPM_CMD! config set openssl-root "%DEPLOYMENT_TARGET%\openssl" -g
   call :ExecuteCmd !NPM_CMD! config set scripts-prepend-node-path true
   call :ExecuteCmd !NPM_CMD! config set audit false
   call :ExecuteCmd !NPM_CMD! config set loglevel silent
