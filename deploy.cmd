@@ -54,30 +54,8 @@ goto Deployment
 
 :SelectNodeVersion
 
-IF DEFINED KUDU_SELECT_NODE_VERSION_CMD (
-  :: The following are done only on Windows Azure Websites environment
-  call %KUDU_SELECT_NODE_VERSION_CMD% "%DEPLOYMENT_SOURCE%" "%DEPLOYMENT_TARGET%" "%DEPLOYMENT_TEMP%"
-  IF !ERRORLEVEL! NEQ 0 goto error
-
-  IF EXIST "%DEPLOYMENT_TEMP%\__nodeVersion.tmp" (
-    SET /p NODE_EXE=<"%DEPLOYMENT_TEMP%\__nodeVersion.tmp"
-    IF !ERRORLEVEL! NEQ 0 goto error
-  )
-  
-  IF EXIST "%DEPLOYMENT_TEMP%\__npmVersion.tmp" (
-    SET /p NPM_JS_PATH=<"%DEPLOYMENT_TEMP%\__npmVersion.tmp"
-    IF !ERRORLEVEL! NEQ 0 goto error
-  )
-
-  IF NOT DEFINED NODE_EXE (
-    SET NODE_EXE=node
-  )
-
-  SET NPM_CMD="!NODE_EXE!" "!NPM_JS_PATH!"
-) ELSE (
-  SET NPM_CMD=npm
-  SET NODE_EXE=node
-)
+SET NPM_CMD=npm
+SET NODE_EXE=node
 
 goto :EOF
 
@@ -110,20 +88,6 @@ IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
   IF !ERRORLEVEL! NEQ 0 goto error
   popd
 )
-
-:: if NOT EXIST "%DEPLOYMENT_TARGET%\config.development.json" (
-:: 	echo Init config.development.json
-:: 	copy "%DEPLOYMENT_TARGET%\config.development.json.init" "%DEPLOYMENT_TARGET%\config.development.json"
-:: ) else (
-:: 	echo Skipping config.development.json
-:: )
-
-:: if NOT EXIST "%DEPLOYMENT_TARGET%\config.production.json" (
-:: 	echo Init config.production.json
-:: 	copy "%DEPLOYMENT_TARGET%\config.production.json.init" "%DEPLOYMENT_TARGET%\config.production.json"
-:: ) else (
-:: 	echo Skipping config.production.json
-:: )
 
 :: 4. Handle database creation and migrations.
 IF EXIST "%DEPLOYMENT_TARGET%\db.js" (
