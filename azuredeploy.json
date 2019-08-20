@@ -107,6 +107,7 @@
           "apiVersion": "2016-08-01",
           "dependsOn": [
             "[resourceId('Microsoft.Web/sites', parameters('siteName'))]",
+            "[resourceId('Microsoft.Web/sites/sourcecontrols', parameters('siteName'), 'web')]",
             "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
           ],
           "properties": {
@@ -117,6 +118,7 @@
             "mail__options__auth__pass": "[parameters('Email Password')]",
             "mail__from": "[parameters('Email From Address')]",
             "WEBSITE_NODE_DEFAULT_VERSION": "10.15.2",
+            "npm_config_arch": "x64",
             "NODE_ENV": "production",
             "APPINSIGHTS_INSTRUMENTATION_KEY": "[reference(concat('Microsoft.Insights/components/', variables('appInsightsName'))).InstrumentationKey]"
           }
@@ -126,8 +128,7 @@
           "type": "sourcecontrols",
           "apiVersion": "2016-08-01",
           "dependsOn": [
-            "[resourceId('Microsoft.Web/sites', parameters('siteName'))]",
-            "[resourceId('Microsoft.Web/sites/config', parameters('siteName'), 'appsettings')]"
+            "[resourceId('Microsoft.Web/sites', parameters('siteName'))]"
           ],
           "properties": {
             "repoUrl": "[parameters('repoUrl')]",
