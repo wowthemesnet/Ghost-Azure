@@ -216,7 +216,8 @@ stages:
               packageForLinux: '$(Pipeline.Workspace)\**\*.zip'
               WebConfigParameters: '-Handler iisnode -NodeStartFile server.js -appType node'
               enableCustomDeployment: true
-              DeploymentType: 'zipDeploy'
+              DeploymentType: 'webDeploy'
+              ExcludeFilesFromAppDataFlag: false
           - task: AzureAppServiceManage@0
             displayName: 'Start Azure App Service'
             inputs:
@@ -302,7 +303,8 @@ stages:
               packageForLinux: '$(Pipeline.Workspace)\**\*.zip'
               WebConfigParameters: '-Handler iisnode -NodeStartFile server.js -appType node'
               enableCustomDeployment: true
-              DeploymentType: 'zipDeploy'
+              DeploymentType: 'webDeploy'
+              ExcludeFilesFromAppDataFlag: false
           - task: AzureAppServiceManage@0
             displayName: 'Start Azure App Service'
             inputs:
