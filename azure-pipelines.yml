@@ -267,9 +267,8 @@ stages:
     pool: server
     steps:
       - task: Delay@1
-        timeoutInMinutes: 65
         inputs:
-          delayForMinutes: '60'
+          delayForMinutes: '15'
   - deployment: UpdateStaging
     displayName: Update Staging
     dependsOn: DelayUpdateStaging
