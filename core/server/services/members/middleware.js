@@ -74,15 +74,7 @@ module.exports = {
         shared.middlewares.servePublicFile.createPublicFileMiddleware(
             'public/members.js',
             'application/javascript',
-            constants.ONE_YEAR_S
-        )
-    ],
-    publicMinified: [
-        shared.middlewares.labs.members,
-        shared.middlewares.servePublicFile.createPublicFileMiddleware(
-            'public/members.min.js',
-            'application/javascript',
-            constants.ONE_YEAR_S
+            constants.ONE_HOUR_S
         )
     ],
     createSessionFromToken: [

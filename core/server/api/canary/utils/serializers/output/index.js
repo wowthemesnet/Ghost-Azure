@@ -63,10 +63,6 @@ module.exports = {
         return require('./members');
     },
 
-    get member_signin_urls() {
-        return require('./member-signin_urls');
-    },
-
     get images() {
         return require('./images');
     },

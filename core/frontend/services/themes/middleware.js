@@ -114,7 +114,6 @@ function updateLocalTemplateOptions(req, res, next) {
     };
 
     const member = req.member ? {
-        uuid: req.member.uuid,
         email: req.member.email,
         name: req.member.name,
         firstname: req.member.name && req.member.name.split(' ')[0],
