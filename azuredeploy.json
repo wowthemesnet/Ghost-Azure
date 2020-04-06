@@ -65,12 +65,7 @@
   "variables": {
     "skuMapping": "[if(equals(parameters('sku'), 'Free'), 'F', if(equals(parameters('sku'), 'Shared'), 'D', if(equals(parameters('sku'), 'Basic'), 'B', if(equals(parameters('sku'), 'Standard'), 'S', if(equals(parameters('sku'), 'Premium'), 'P', 'F')))))]",
     "sku": "[concat(variables('skuMapping'), parameters('Worker Size'))]",
-    "appInsightsName": "[concat(parameters('siteName'), '-insights')]",
-    "siteProperties": {
-      "use32BitWorkerProcess": false,
-      "httpsonly": true,
-      "alwaysOn": true
-    }
+    "appInsightsName": "[concat(parameters('siteName'), '-insights')]"
   },
   "resources": [
     {
@@ -111,7 +106,11 @@
           "dependsOn": [
             "[resourceId('Microsoft.Web/sites', parameters('siteName'))]"
           ],
-          "properties": "[variables('siteProperties')]"
+          "properties": {
+            "use32BitWorkerProcess": false,
+            "httpsOnly": true,
+            "alwaysOn": true
+          }
         },
         {
           "name": "appsettings",
